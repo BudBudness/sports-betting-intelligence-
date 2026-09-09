@@ -19,11 +19,17 @@ jobs:
           python-version: "3.12"
       - name: Install package
         run: python -m pip install -e .
-      - name: Run historical evidence
-        run: PYTHONPATH=src python scripts/run_historical_evidence.py
-      - name: Upload evidence artifact
+      - name: Run complete E2E evidence pipeline
+        run: PYTHONPATH=src python scripts/run_end_to_end.py
+      - name: Verify evidence artifacts
+        run: |
+          test -s evidence/e2e/report.json
+          test -s evidence/e2e/summary.json
+          test -s evidence/e2e/prediction_ledger.jsonl
+          test -s evidence/e2e/predictions.csv
+      - name: Upload complete evidence bundle
         uses: actions/upload-artifact@v4
         with:
-          name: historical-evidence
-          path: evidence/historical/football_data_e0.json
+          name: sports-intelligence-e2e-evidence
+          path: evidence/e2e/
           if-no-files-found: error
