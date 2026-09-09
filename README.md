@@ -22,8 +22,14 @@ Folders/modules define capabilities. Deterministic services execute logic. Pipel
 
 Historical validation reconstructs the information set available at each prediction timestamp. Production evidence is maintained through an immutable prediction ledger, outcome reconciliation, calibration monitoring, market comparison, closing-line analysis, and drift detection.
 
+## Evidence-stage implementation
+
+The repository now includes a reproducible historical evidence track using Football-Data.co.uk Premier League E0 data, a walk-forward Elo baseline, normalized market baseline comparison, source SHA-256 provenance, closing-price capture, and a GitHub Actions evidence workflow. See `docs/EVIDENCE_STAGE.md`.
+
+The evidence runner covers seasons `2122` through `2526` and writes a machine-readable evidence artifact. Numerical results are not committed until the source data has actually been downloaded and the run completed successfully.
+
 ## Repository status
 
-`v0.1.0` — implementation baseline.
+`v0.1.0` — evidence-stage implementation baseline.
 
 No fabricated historical data, performance claims, odds, or profitability results are included.
