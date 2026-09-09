@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import csv
 import io
+import time
+import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -74,9 +76,24 @@ def parse_csv(content: bytes, season: str, source_url: str) -> list[MatchRow]:
     return rows
 
 
-def download_season(season: str, timeout: int = 30) -> tuple[list[MatchRow], str, str]:
+def download_season(season: str, timeout: int = 30, retries: int = 5) -> tuple[list[MatchRow], str, str]:
     url = BASE_URL.format(season=season)
-    request = urllib.request.Request(url, headers={"User-Agent": "sports-betting-intelligence/0.1"})
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        content = response.read()
-    return parse_csv(content, season, url), url, sha256(content).hexdigest()
+    last_error: Exception | None = None
+    for attempt in range(1, retries + 1):
+        request = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "sports-betting-intelligence/0.1 (+historical-research)",
+                "Accept": "text/csv,text/plain,*/*",
+            },
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                content = response.read()
+            return parse_csv(content, season, url), url, sha256(content).hexdigest()
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as exc:
+            last_error = exc
+            if attempt == retries:
+                break
+            time.sleep(2 ** (attempt - 1))
+    raise RuntimeError(f"Failed to download historical source after {retries} attempts: {url}") from last_error
