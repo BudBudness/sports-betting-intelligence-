@@ -22,6 +22,9 @@ class MatchRow:
     avg_home_odds: float | None
     avg_draw_odds: float | None
     avg_away_odds: float | None
+    closing_home_odds: float | None
+    closing_draw_odds: float | None
+    closing_away_odds: float | None
     source_url: str
     source_sha256: str
 
@@ -62,6 +65,9 @@ def parse_csv(content: bytes, season: str, source_url: str) -> list[MatchRow]:
             avg_home_odds=_number(raw, "AvgH", "B365H"),
             avg_draw_odds=_number(raw, "AvgD", "B365D"),
             avg_away_odds=_number(raw, "AvgA", "B365A"),
+            closing_home_odds=_number(raw, "AvgCH", "B365CH"),
+            closing_draw_odds=_number(raw, "AvgCD", "B365CD"),
+            closing_away_odds=_number(raw, "AvgCA", "B365CA"),
             source_url=source_url,
             source_sha256=digest,
         ))
