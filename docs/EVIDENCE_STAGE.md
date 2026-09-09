@@ -6,7 +6,7 @@ The project is now entering the evidence stage. The objective is to replace arch
 
 **Dataset:** Football-Data.co.uk England Premier League E0 historical CSVs.
 
-The source publishes historical results and betting odds, including collected opening/pre-closing prices and, for supported seasons, closing prices. Source documentation states that historical results, odds and match statistics are available for quantitative testing. citeturn0search0turn0search8
+The source publishes historical results and betting odds, including collected opening/pre-closing prices and, for supported seasons, closing prices. Source documentation states that historical results, odds and match statistics are available for quantitative testing.
 
 **Baseline model:** walk-forward Elo.
 
